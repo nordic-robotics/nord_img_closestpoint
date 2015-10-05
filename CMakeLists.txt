@@ -8,12 +8,15 @@ find_package(catkin REQUIRED COMPONENTS
   image_geometry 
   std_msgs 
   roscpp 
+  rospy
   image_transport
   sensor_msgs
 )
-generate_messages(DEPENDENCIES std_msgs)
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+  message_runtime
+)
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
