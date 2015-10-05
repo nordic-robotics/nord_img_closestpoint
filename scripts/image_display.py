@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import sys
 import rospy
-import cv
 import cv2
 import numpy as np
 from std_msgs.msg import String
