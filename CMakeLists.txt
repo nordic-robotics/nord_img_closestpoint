@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 2.8.3)
 project(nord_img_closestpoint)
 set(CMAKE_CXX_FLAGS "--std=c++11 ${CMAKE_CXX_FLAGS}")
 
+find_package(OpenCV REQUIRED)
+
 find_package(catkin REQUIRED COMPONENTS
-  cv_bridge 
-  OpenCV  
+  cv_bridge
   image_geometry 
   std_msgs 
   roscpp 
