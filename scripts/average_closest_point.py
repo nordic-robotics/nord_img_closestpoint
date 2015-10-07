@@ -36,24 +36,31 @@ class image_converter:
           
         (rows,cols,channels) = cv_image.shape
 
+        # Move undesired points to infinity and smooth
+        filter_size = 21
+        cv_image[cv_image < 300] = 60001
+        cv_image_blur = cv2.GaussianBlur(cv_image,(filter_size,filter_size),0)
         
+        # The average closest pixel
+        dist=np.min(cv_image_blur)/1000.0
+        indxarr=np.argwhere(cv_image_blur == np.min(cv_image_blur))
+        avg=np.average(indxarr, axis = 0)
+#        print np.min(cv_image_blur)
+        #  print indxarr
 
-#        "cv2.imshow("Depth Image window", cv_image*10)
-#        "cv2.waitKey(3)
+        # calculate the angle relative to the center of the camera
+        angle_to_min = (((avg[1]-320.0)/320.0) * 57.5/2.0 * np.pi/180.0)
 
-##        print np.max(cv_image)
-        
-        
-        cv_image[cv_image < 200] = 60001
-        dist=np.min(cv_image)/1000.0
-	indxarr=np.argwhere(cv_image == np.min(cv_image))
-	#print indxarr
-	avg=np.average(indxarr, axis = 0)
-	angle_to_min = (((avg[1]-320.0)/320.0) * 57.5/2.0 * np.pi/180.0)
-	msgs=RelativePoint()
-	msgs.angle=angle_to_min
-	msgs.distance=dist
-	self.pub.publish(msgs)
+        # prepair the message
+        msgs=RelativePoint()
+        msgs.angle=angle_to_min
+        msgs.distance=dist
+        self.pub.publish(msgs)
+
+        # uncomment for visualization        
+#        cv2.circle(cv_image_blur, (int(avg[1]),int(avg[0])), 10, 6000, thickness=1, lineType=8)
+#        cv2.imshow("Depth Image window", cv_image_blur*10)
+#        cv2.waitKey(3)
 	
 
 
